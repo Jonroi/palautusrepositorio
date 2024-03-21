@@ -1,2 +1,0 @@
-# palautusrepositorio
-university fullstack course
