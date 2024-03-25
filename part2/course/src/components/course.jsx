@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+// Renders course details: header, content, and total exercises.
 const Course = ({ course }) => {
     return (
         <div>
@@ -8,6 +9,7 @@ const Course = ({ course }) => {
         </div>
     )
 }
+//renders the header
 const Header = ({ name }) => {
     return (
         <div>
@@ -15,6 +17,7 @@ const Header = ({ name }) => {
         </div>
     )
 }
+//renders multiple parts
 const Content = ({ parts }) => {
     return (
         <div>
@@ -24,7 +27,7 @@ const Content = ({ parts }) => {
         </div>
     )
 }
-
+//renders a single part
 const Part = ({ part }) => {
     return (
         <div>
@@ -34,11 +37,11 @@ const Part = ({ part }) => {
         </div>
     )
 }
-
+//calculates the total number of exercises using the reduce method
 const Total = ({ parts }) => {
     return (
         <div>
-            <p>Number of exercises : {parts ? parts.reduce((total, part) => total + part.exercises, 0) : 0}</p>
+            <p><b>total of exercises : {parts ? parts.reduce((total, part) => total + part.exercises, 0) : 0}</b></p>
         </div>
     )
 }
