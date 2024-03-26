@@ -1,9 +1,9 @@
 import { useState } from 'react'
-
+import './App.css'
+import Names from './components/persons'
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' },
-
+    { name: 'Arto Hellas' }
   ])
   const [newName, setNewName] = useState('')
 
@@ -19,7 +19,6 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-
       ...
     </div>
   )
