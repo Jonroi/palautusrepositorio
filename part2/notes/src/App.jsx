@@ -1,14 +1,23 @@
-/* eslint-disable react/prop-types */
-import { useState } from 'react'
-import Note from './components/Note'
+import { useEffect, useState } from "react";
+import axios from "axios";
+import Note from './components/Note';
 
-// renders a list of notes based on the toggle, and allows the user to add new notes.
-const App = (initialNotes) => {
-  const [notes, setNotes] = useState(initialNotes.notes)
+const App = () => {
+  const [notes, setNotes] = useState([])
   const [newNote, setNewNote] = useState('')
-  const [showAll, setShowAll] = useState(false)
+  const [showAll, setShowAll] = useState(true)
 
-  // adds a new note to an array of notes and resets the newNote variable.
+  useEffect(() => {
+    console.log('effect')
+    axios
+      .get('http://localhost:3001/notes')
+      .then(response => {
+        console.log('promise fulfilled')
+        setNotes(response.data)
+      })
+  }, [])
+  console.log('render', notes.length, 'notes')
+
   const addNote = (event) => {
     event.preventDefault()
     const noteObject = {
