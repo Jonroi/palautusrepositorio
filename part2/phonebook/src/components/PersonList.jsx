@@ -1,10 +1,14 @@
 /* eslint-disable react/prop-types */
-const Person = ({ name, number }) => {
+const Person = ({ name, number, onDelete }) => {
     return (
-        <li>{name} {number}</li>
+        <div>
+            {name} {number}
+            <button onClick={onDelete}>Delete</button>
+        </div>
     );
 };
-const PersonList = ({ persons, filter }) => {
+
+const PersonList = ({ persons, filter = '', onDelete }) => {
     const filteredPersons = persons.filter(person =>
         person.name.toLowerCase().includes(filter.toLowerCase())
     );
@@ -14,7 +18,9 @@ const PersonList = ({ persons, filter }) => {
             <h2>Numbers</h2>
             <ul>
                 {filteredPersons.map((person, index) =>
-                    <Person key={`${person.name}-${index}`} name={person.name} number={person.number} />
+                    <Person key={`${person.name}-${index}`} name={person.name} number={person.number}
+                        onDelete={() => onDelete(person.id)} />
+
                 )}
             </ul>
         </div>

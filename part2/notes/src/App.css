@@ -2,9 +2,29 @@
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
-  text-align: center;
+  text-align: start;
+}
+ul {
+  list-style-type: none; /* Remove bullets from unordered lists */
+}
+.noteContainer {
+  display: flex;
+  align-items: center; /* Align items vertically */
+  justify-content: space-between; /* Distribute items along the main axis with space between them */
+}
+.importance {
+  cursor: pointer;
+  color: green;
+  padding: 5px;
+  margin-right: 10px;
 }
 
+.delete {
+  cursor: pointer;
+  color: red;
+  padding: 5px;
+  margin-right: 10px;
+}
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -12,10 +32,10 @@
   transition: filter 300ms;
 }
 .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+  filter: drop-shadow(0 0 2em #f50404aa);
 }
 .logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+  filter: drop-shadow(0 0 2em #ff0000aa);
 }
 
 @keyframes logo-spin {
