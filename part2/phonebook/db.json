@@ -1,7 +1,7 @@
 {
   "persons":[
     { 
-      "name": "Arto Hellas", 
+      "name": "Pertti Keinonen", 
       "number": "040-123456",
       "id": 1
     },
@@ -49,6 +49,16 @@
       "name": "Nikola Tesla", 
       "number": "999-888777",
       "id": 10
+    },
+    { 
+      "name": "Dick Johson", 
+      "number": "845-626642",
+      "id": 11
+    },
+    { 
+      "name": "John C. Nibbles", 
+      "number": "484-48484848",
+      "id": 12
     }
   ]
 }
