@@ -10,6 +10,14 @@ const App = () => {
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [filter, setFilter] = useState('');
+  const [notification, setNotification] = useState(null);
+
+  const handleNotification = (message, type = 'error') => {
+    setNotification({ message, type });
+    setTimeout(() => {
+      setNotification(null);
+    }, 5000);
+  };
 
   useEffect(() => {
     personService
@@ -19,6 +27,7 @@ const App = () => {
       })
       .catch(error => {
         console.error('Error fetching data:', error);
+        handleNotification('Failed to fetch data. Please try again later.');
       });
   }, []);
 
@@ -50,13 +59,13 @@ const App = () => {
             setPersons(persons.map(person =>
               person.id !== existingPerson.id ? person : returnedPerson
             ));
-            window.confirm(`Updated ${newName}'s phone number.`);
+            handleNotification(`Updated ${newName}'s phone number.`, 'success'); // Lisätty 'success' parametri
             setNewName('');
             setNewNumber('');
           })
           .catch(error => {
             console.error('Error updating person:', error);
-            alert('Failed to update person. Please try again.');
+            handleNotification('Failed to update person. Please try again.');
           });
       }
     } else {
@@ -69,42 +78,51 @@ const App = () => {
         .create(personObject)
         .then(returnedPerson => {
           setPersons([...persons, returnedPerson]); // Update the list of persons
-          window.confirm(`Added ${newName} to phonebook`);
+          handleNotification(`Added ${newName} to phonebook`, 'success');
           setNewName('');
           setNewNumber('');
         })
         .catch(error => {
           console.error('Error adding person:', error);
-          alert('Failed to add person. Please try again.');
+          handleNotification('Failed to add person. Please try again.');
         });
     }
     // Delete a person
-  }; const handleDelete = (id) => {
+  };
+
+  const handleDelete = (id) => {
     personService
       .remove(id)
       .then(() => {
         setPersons(persons.filter(person => person.id !== id));
-        window.confirm('Person deleted successfully.');
+        handleNotification('Person deleted successfully.', 'success');
       })
       .catch(error => { // Handle error
         console.error('Error deleting person:', error);
-        alert('Failed to delete person. Please try again.');
+        handleNotification('Failed to delete person. Please try again.');
       });
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <FilterForm filter={filter} handleFilterChange={handleFilterChange} />
-      <PersonForm
-        newName={newName}
-        newNumber={newNumber}
-        handleNameChange={handleNameChange}
-        handleNumberChange={handleNumberChange}
-        handleSubmit={handleSubmit}
-      />
-      <PersonList persons={persons} filter={filter} onDelete={handleDelete} />
+
+      <div className="content-wrapper">
+        <div className="form-wrapper">
+          <FilterForm filter={filter} handleFilterChange={handleFilterChange} />
+          <PersonForm
+            newName={newName}
+            newNumber={newNumber}
+            handleNameChange={handleNameChange}
+            handleNumberChange={handleNumberChange}
+            handleSubmit={handleSubmit}
+          />
+          {notification && <p className={notification.type}>{notification.message}</p>}
+        </div>
+        <PersonList persons={persons} filter={filter} onDelete={handleDelete} />
+      </div>
     </div>
+
   );
 };
 

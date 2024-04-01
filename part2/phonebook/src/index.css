@@ -1,3 +1,27 @@
+h2 {
+  color : green;
+  font-style: italic;
+}
+.error {
+  background-color: #ffffff; /* vaaleanpunainen */
+  color: #ff0000; /* tummanpunainen */
+  border-radius: 5px;
+  text-align: center;
+}
+
+.success {
+  background-color: #d4edda; /* vaaleanvihreä */
+  color: #155724; /* tummanvihreä */
+  border-radius: 5px;
+  text-align: center;
+}
+
+.noteContainer {
+  color : grey;
+  padding-top: 3px;
+  font-size: 15px;
+}
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

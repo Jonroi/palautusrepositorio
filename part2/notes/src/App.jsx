@@ -1,12 +1,28 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import noteService from './services/notes'
 import Note from './components/Note'
 import './App.css';
 
+const Footer = () => {
+  const footerStyle = {
+    color: 'green',
+    fontStyle: 'italic',
+    fontSize: 16
+  }
+
+  return (
+    <div style={footerStyle}>
+      <br />
+      <em>Note app, Department of Computer Science, University of Helsinki 2023</em>
+    </div>
+  )
+}
 function App() {
-  const [notes, setNotes] = useState([]);
+  const [notes, setNotes] = useState(null);
   const [newNote, setNewNote] = useState('');
   const [showAll, setShowAll] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('some error happened...');
 
   useEffect(() => {
     noteService
@@ -14,7 +30,11 @@ function App() {
       .then(initialNotes => {
         setNotes(initialNotes)
       })
-  }, []);
+  }, [])
+  // do not render anything if notes is still null
+  if (!notes) {
+    return null
+  }
 
 
   //handles the submission of a new note
@@ -54,8 +74,13 @@ function App() {
       .then(returnedNote => {
         setNotes(notes.map(note => note.id !== id ? note : returnedNote))
       })
-      .catch(error => {
-        alert(`the note '${error.note}' was already deleted from server`)
+      .catch(() => {
+        setErrorMessage(
+          `Note '${note.content}' was already removed from the server`
+        )
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
         setNotes(notes.filter(n => n.id !== id))
       })
   }
@@ -70,9 +95,22 @@ function App() {
     ? notes
     : notes.filter(note => note.important);
 
+  const Notification = ({ message }) => {
+    if (message === null) {
+      return null
+    }
+
+    return (
+      <div className="error">
+        {message}
+      </div>
+    )
+  }
+
   return (
     <div>
       <h1>Notes</h1>
+      <Notification message={errorMessage} />
       <div>
         {/* define the button that toggles the value of showAll */}
         <button onClick={() => setShowAll(!showAll)}>
@@ -97,6 +135,7 @@ function App() {
           onChange={handleNoteChange} />
         <button type="submit">ADD</button>
       </form>
+      <Footer />
     </div>
   );
 }

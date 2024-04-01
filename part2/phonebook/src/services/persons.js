@@ -1,4 +1,5 @@
-import axios from 'axios'
+
+import axios from 'axios' // a library for making http requests
 const baseUrl = 'http://localhost:3001/persons'
 // get all notes and their content
 const getAll = () => {

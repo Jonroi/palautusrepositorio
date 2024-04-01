@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-
+import '../index.css';
 //defines a functional component called Note
 const Note = ({ note, toggleImportance, onDelete }) => {
     const label = note.important ? 'Important' : 'Not important';

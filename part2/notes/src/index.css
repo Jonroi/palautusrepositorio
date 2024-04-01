@@ -1,3 +1,24 @@
+h1 {
+  color : green;
+  font-style: italic;
+}
+
+.error {
+  color: red;
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.noteContainer {
+  color : grey;
+  padding-top: 3px;
+  font-size: 15px;
+}
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
