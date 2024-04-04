@@ -12,6 +12,7 @@ const App = () => {
   const [filter, setFilter] = useState('');
   const [notification, setNotification] = useState(null);
 
+  // handles notification
   const handleNotification = (message, type = 'error') => {
     setNotification({ message, type });
     setTimeout(() => {
@@ -19,6 +20,7 @@ const App = () => {
     }, 5000);
   };
 
+  // fetches data
   useEffect(() => {
     personService
       .getAll()
