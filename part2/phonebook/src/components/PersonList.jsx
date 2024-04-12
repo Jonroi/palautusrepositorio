@@ -10,7 +10,7 @@ const Person = ({ name, number, onDelete }) => {
 
 const PersonList = ({ persons, filter = '', onDelete }) => {
     const filteredPersons = persons.filter(person =>
-        person.name.toLowerCase().includes(filter.toLowerCase())
+        (person.name?.includes(filter)) || (person.number?.includes(filter))
     );
 
     return (
@@ -20,7 +20,6 @@ const PersonList = ({ persons, filter = '', onDelete }) => {
                 {filteredPersons.map((person, index) =>
                     <Person key={`${person.name}-${index}`} name={person.name} number={person.number}
                         onDelete={() => onDelete(person.id)} />
-
                 )}
             </ul>
         </div>

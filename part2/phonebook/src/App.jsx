@@ -45,6 +45,7 @@ const App = () => {
     setFilter(event.target.value);
   };
 
+  // handles form submission
   const handleSubmit = (event) => {
     event.preventDefault();
 
