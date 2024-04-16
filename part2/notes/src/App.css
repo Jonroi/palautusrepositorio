@@ -9,8 +9,8 @@ ul {
 }
 .noteContainer {
   display: flex;
-  align-items: center; /* Align items vertically */
-  justify-content: space-between; /* Distribute items along the main axis with space between them */
+  align-items: center;
+  justify-content: space-between;
 }
 .importance {
   cursor: pointer;

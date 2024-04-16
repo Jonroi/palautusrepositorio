@@ -7,8 +7,8 @@ import PersonList from './components/PersonList';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
-  const [newName, setNewName] = useState('');
-  const [newNumber, setNewNumber] = useState('');
+  const [newName, setNewName] = useState('John Johnson');
+  const [newNumber, setNewNumber] = useState('use finnish number format (+123-4567890)');
   const [filter, setFilter] = useState('');
   const [notification, setNotification] = useState(null);
 
@@ -62,7 +62,7 @@ const App = () => {
             setPersons(persons.map(person =>
               person.id !== existingPerson.id ? person : returnedPerson
             ));
-            handleNotification(`Updated ${newName}'s phone number.`, 'success'); // Lisätty 'success' parametri
+            handleNotification(`Updated ${newName}'s phone number.`, 'success');
             setNewName('');
             setNewNumber('');
           })
