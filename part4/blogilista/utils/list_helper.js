@@ -1,3 +1,4 @@
+/* eslint-disable */
 const dummy = (blogs) => {
   return 1;
 };

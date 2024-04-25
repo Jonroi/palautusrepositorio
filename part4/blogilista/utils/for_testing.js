@@ -1,20 +1,15 @@
+/* eslint-disable no-plusplus */
 const _ = require("lodash");
 
-const reverse = (string) => {
-  return string.split("").reverse().join("");
-};
+const reverse = (string) => string.split("").reverse().join("");
 
 const average = (array) => {
-  const reducer = (sum, item) => {
-    return sum + item;
-  };
+  const reducer = (sum, item) => sum + item;
   return array.length === 0 ? 0 : array.reduce(reducer, 0) / array.length;
 };
 
 const totalLikes = (blogs) => {
-  const reducer = (sum, blog) => {
-    return sum + blog.likes;
-  };
+  const reducer = (sum, blog) => sum + blog.likes;
   return blogs.length === 0 ? 0 : blogs.reduce(reducer, 0);
 };
 
@@ -22,7 +17,7 @@ const favoriteBlog = (blogs) => {
   if (blogs.length === 0) {
     return null;
   }
-  //finds the first blog with the most likes
+  // finds the first blog with the most likes
   let favorite = blogs[0];
   // checks the rest of the blogs
   for (let i = 1; i < blogs.length; i++) {
@@ -52,6 +47,7 @@ function mostBlogs(blogs) {
   // Get all authors with the maximum blog count
   const authorsWithMaxBlogs = _.chain(authorCounts)
     .toPairs() // convert object to [key, value] pairs
+    // eslint-disable-next-line no-unused-vars
     .filter(([author, count]) => count === maxCount) // keep only those with maxCount
     .map(([author, count]) => ({ author, count })) // convert to array of objects
     .value();
