@@ -1,3 +1,5 @@
+/* eslint-disable @stylistic/js/semi */
+/* eslint-disable @stylistic/js/quotes */
 const mongoose = require("mongoose");
 
 if (process.argv.length < 3) {
@@ -5,8 +7,9 @@ if (process.argv.length < 3) {
   process.exit(1);
 }
 
-const url =
-  "mongodb+srv://user:${password}@noteapp.otvtpot.mongodb.net/?retryWrites=true&w=majority&appName=noteApp";
+const password = process.argv[2];
+
+const url = `  mongodb+srv://user:${password}@noteapp.otvtpot.mongodb.net/?appName=noteAppretryWrites=true&w=majority`;
 
 mongoose.set("strictQuery", false);
 mongoose.connect(url).then(() => {
@@ -17,17 +20,6 @@ mongoose.connect(url).then(() => {
 
   const Note = mongoose.model("Note", noteSchema);
 
-  const note = new Note({
-    content: "Browser can execute only JavaScript",
-    important: true,
-  });
-
-  /*
-  note.save().then(result => {
-    console.log('note saved!')
-    mongoose.connection.close()
-  })
-  */
   Note.find({}).then((result) => {
     result.forEach((note) => {
       console.log(note);
