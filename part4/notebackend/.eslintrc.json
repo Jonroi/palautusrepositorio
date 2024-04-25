@@ -3,9 +3,6 @@
   "plugins": ["prettier"],
   "rules": {
     "no-console": "off",
-    "no-param-reassign": "off",
-    "no-underscore-dangle": "off",
-    "prefer-destructuring": "off",
     "prettier/prettier": [
       "error",
       {

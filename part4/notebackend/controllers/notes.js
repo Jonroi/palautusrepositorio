@@ -7,7 +7,7 @@ notesRouter.get('/', async (request, response) => {
 })
 
 notesRouter.put('/:id', async (request, response) => {
-  const body = request.body
+  const { body } = request
 
   const note = {
     content: body.content,
@@ -21,7 +21,7 @@ notesRouter.put('/:id', async (request, response) => {
 })
 
 notesRouter.post('/', async (request, response) => {
-  const body = request.body
+  const { body } = request
 
   const note = new Note({
     content: body.content,
