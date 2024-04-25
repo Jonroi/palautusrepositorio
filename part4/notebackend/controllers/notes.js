@@ -11,10 +11,12 @@ notesRouter.put('/:id', async (request, response) => {
 
   const note = {
     content: body.content,
-    important: body.important,
+    important: body.important
   }
 
-  const updatedNote = await Note.findByIdAndUpdate(request.params.id, note, { new: true })
+  const updatedNote = await Note.findByIdAndUpdate(request.params.id, note, {
+    new: true
+  })
   response.json(updatedNote)
 })
 
@@ -23,7 +25,7 @@ notesRouter.post('/', async (request, response) => {
 
   const note = new Note({
     content: body.content,
-    important: body.important || false,
+    important: body.important || false
   })
 
   const savedNote = await note.save()

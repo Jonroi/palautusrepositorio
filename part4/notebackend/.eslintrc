@@ -4,6 +4,6 @@
   "rules": {
     "prettier/prettier": ["error"],
     "singleQuote": false,
-    "printWidth": 120,
-  },
+    "printWidth": 120
+  }
 }
