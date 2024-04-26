@@ -1,5 +1,3 @@
-/* eslint-disable @stylistic/js/semi */
-/* eslint-disable @stylistic/js/quotes */
 const mongoose = require('mongoose')
 
 if (process.argv.length < 3) {

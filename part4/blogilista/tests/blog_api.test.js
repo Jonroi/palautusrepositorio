@@ -152,7 +152,7 @@ describe('Database connection', () => {
 
     test('Update a blog can be done with valid data', async () => {
       const blogs = await api.get('/api/blogs')
-      const blogToUpdate = blogs.body[1] // valitse toinen blogi
+      const blogToUpdate = blogs.body[1]
       const updatedBlogData = {
         title: 'Updated Blog Title',
         author: 'Updated Author',
