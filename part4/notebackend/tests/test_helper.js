@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 const Note = require('../models/note')
 const User = require('../models/user')
 
