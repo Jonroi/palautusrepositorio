@@ -1,21 +1,14 @@
 const mongoose = require('mongoose')
 
-// blogSchema is an object that describes the structure of a blog
-const blogSchema = new mongoose.Schema({
+const blogSchema = mongoose.Schema({
   title: {
     type: String,
-    required: true,
-    minlength: 3
+    required: true
   },
-  author: {
-    type: String,
-    required: true,
-    minlength: 2
-  },
+  author: String,
   url: {
     type: String,
-    required: true,
-    minlength: 4
+    required: true
   },
   likes: {
     type: Number,
@@ -27,7 +20,6 @@ const blogSchema = new mongoose.Schema({
   }
 })
 
-// noteSchema.set('toJSON', { virtuals: true }); means that virtuals will be included in the JSON output
 blogSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
