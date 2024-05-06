@@ -1,87 +1,91 @@
 import { useState, useEffect } from 'react';
 import Blog from './components/Blog';
-import blogService from './services/blogs';
-import loginService from './services/login';
+import handleLogin from './controllers/handleLogin';
+import handleLogout from './controllers/handleLogout';
+import blogService from './services/blogService';
+import Notification from './components/Notification';
+
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
-  const [user, setUser] = useState(null);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [user, setUser] = useState(null);
+  const [successMsg, setSuccessMsg] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
 
   useEffect(() => {
-    blogService
-      .getAll()
-      .then((blogs) => setBlogs(blogs))
-      .catch((error) => {
-        console.log(error)
-      })
-  }, [])
+    blogService.getAll().then((blogs) => setBlogs(blogs)).catch((error) => {
+      console.log(error);
+    });
+  }, []);
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser')
+    const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser');
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
+      const user = JSON.parse(loggedUserJSON);
+      setUser(user);
+      blogService.setToken(user.token);
     }
-  }, [])
+  }, []);
 
-  const handleLogin = async (event) => {
-    event.preventDefault()
-    try {
-      const user = await loginService.login({ username, password })
 
-      window.localStorage.setItem('loggedBloglistUser', JSON.stringify(user))
+  const loginForm = () => {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [user, setUser] = useState(null);
+    const [successMsg, setSuccessMsg] = useState(null);
+    const [errorMsg, setErrorMsg] = useState(null);
 
-      blogService.setToken(user.token)
-      setUser(user)
-      setUsername('')
-      setPassword('')
-      setSuccessMsg(`Welcome, ${username}!`)
-    } catch (error) {
-      setErrorMsg(error.response.data.error)
-    }
-  }
-
-  if (user === null) {
     return (
       <div>
-        <h2>Log in to application</h2>
-        <form onSubmit={handleLogin}>
+        <Notification successMsg={successMsg}
+          setSuccessMsg={setSuccessMsg}
+          errorMsg={errorMsg}
+          setErrorMsg={setErrorMsg} />
+
+        <form onSubmit={(e) => handleLogin(e, setUser, setUsername, setPassword, setSuccessMsg, setErrorMsg)}>
           <div>
-            username
-            <input
-              type="text"
-              value={username}
-              name="Username"
-              onChange={({ target }) => setUsername(target.value)}
-            />
+            <label>Username</label>
+            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
           </div>
           <div>
-            password
-            <input
-              type="password"
-              value={password}
-              name="Password"
-              onChange={({ target }) => setPassword(target.value)}
-            />
+            <label>Password</label>
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
-          <button type="submit">login</button>
+          <button type="submit">Login</button>
         </form>
-        {errorMessage && <p>{errorMessage}</p>}
       </div>
     );
-  }
+  };
+
 
 
   return (
     <div>
-      <h2>blogs</h2>
-      {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
-      ))}
+      <h1>Blogs</h1>
+      {successMsg && <Notification message={successMsg} type="success" />}
+      {errorMsg && <Notification message={errorMsg} type="error" />}
+
+
+      {user === null ? (
+        <div>
+          <h2>Log in to application</h2>
+          {loginForm()}
+        </div>
+      ) : (
+        <div>
+          <p>{user.name} logged in{' '}
+            <button onClick={() => handleLogout(user.username)}>logout</button></p>
+          <div>
+            <h2>Blogs</h2>
+            {blogs.map((blog) => (
+              <Blog key={blog.id} blog={blog} />
+            ))}
+          </div>
+          <h2>bloglist</h2>
+        </div>
+      )}
     </div>
   );
 };
