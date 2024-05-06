@@ -1,18 +1,24 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Blog from './components/Blog';
 import handleLogin from './controllers/handleLogin';
 import handleLogout from './controllers/handleLogout';
 import blogService from './services/blogService';
 import Notification from './components/Notification';
+import LoginForm from './components/loginForm';
+import Togglable from './components/Togglable';
+import BlogForm from './components/BlogForm';
 
 
 const App = () => {
+  const [loginVisible, setLoginVisible] = useState(false)
   const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
   const [successMsg, setSuccessMsg] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const blogFormRef = useRef();
+
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs)).catch((error) => {
@@ -29,37 +35,38 @@ const App = () => {
     }
   }, []);
 
+  const addBlog = (blogObject) => {
+    blogFormRef.current.toggleVisibility()
+    blogService
+      .create(blogObject)
+      .then(returnedBlog => {
+        setBlogs(blogs.concat(returnedBlog))
+      })
+    console.log('created blog', blogObject)
+  }
 
   const loginForm = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [user, setUser] = useState(null);
-    const [successMsg, setSuccessMsg] = useState(null);
-    const [errorMsg, setErrorMsg] = useState(null);
+    const hideWhenVisible = { display: loginVisible ? 'none' : '' }
+    const showWhenVisible = { display: loginVisible ? '' : 'none' }
 
     return (
       <div>
-        <Notification successMsg={successMsg}
-          setSuccessMsg={setSuccessMsg}
-          errorMsg={errorMsg}
-          setErrorMsg={setErrorMsg} />
-
-        <form onSubmit={(e) => handleLogin(e, setUser, setUsername, setPassword, setSuccessMsg, setErrorMsg)}>
-          <div>
-            <label>Username</label>
-            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-          </div>
-          <div>
-            <label>Password</label>
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-          </div>
-          <button type="submit">Login</button>
-        </form>
+        <div style={hideWhenVisible}>
+          <button onClick={() => setLoginVisible(true)}>Login</button>
+        </div>
+        <div style={showWhenVisible}>
+          <LoginForm
+            username={username}
+            password={password}
+            handleUsernameChange={({ target }) => setUsername(target.value)}
+            handlePasswordChange={({ target }) => setPassword(target.value)}
+            handleSubmit={handleLogin}
+          />
+          <button onClick={() => setLoginVisible(false)}>cancel</button>
+        </div>
       </div>
-    );
-  };
-
-
+    )
+  }
 
   return (
     <div>
@@ -70,23 +77,36 @@ const App = () => {
 
       {user === null ? (
         <div>
-          <h2>Log in to application</h2>
+          <p>Login to see your blogs</p>
           {loginForm()}
         </div>
       ) : (
         <div>
+          <h2>BLOGS</h2>
           <p>{user.name} logged in{' '}
             <button onClick={() => handleLogout(user.username)}>logout</button></p>
           <div>
-            <h2>Blogs</h2>
-            {blogs.map((blog) => (
-              <Blog key={blog.id} blog={blog} />
+            <Togglable buttonLabel="new blog" ref={blogFormRef}>
+              <BlogForm createNote={addBlog} />
+            </Togglable>
+
+            {sortedBlogs.map((blog) => (
+              <Blog
+                key={blog.id}
+                blog={blog}
+                user={user}
+                blogs={blogs}
+                setBlogs={setBlogs}
+                setSuccessMsg={setSuccessMsg}
+                setErrorMsg={setErrorMsg}
+              />
             ))}
           </div>
           <h2>bloglist</h2>
         </div>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 };
 
