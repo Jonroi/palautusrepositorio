@@ -1,113 +1,147 @@
-import { useState, useEffect, useRef } from 'react';
-import Blog from './components/Blog';
-import handleLogin from './controllers/handleLogin';
-import handleLogout from './controllers/handleLogout';
-import blogService from './services/blogService';
-import Notification from './components/Notification';
-import LoginForm from './components/loginForm';
-import Togglable from './components/Togglable';
-import BlogForm from './components/BlogForm';
-
+import { useState, useEffect, useRef } from 'react'
+import Blog from './components/Blog'
+import LoginForm from './components/LoginForm'
+import AddBlogForm from './components/addBlogForm'
+import Notification from './components/Notification'
+import Togglable from './components/Togglable'
+import blogService from './services/blogService'
+import loginService from './services/loginService'
 
 const App = () => {
-  const [loginVisible, setLoginVisible] = useState(false)
-  const [blogs, setBlogs] = useState([]);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [user, setUser] = useState(null);
-  const [successMsg, setSuccessMsg] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
-  const blogFormRef = useRef();
+  const [blogs, setBlogs] = useState([])
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [user, setUser] = useState(null)
+  const [successMsg, setSuccessMsg] = useState(null)
+  const [errorMsg, setErrorMsg] = useState(null)
 
-
-  useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs)).catch((error) => {
-      console.log(error);
-    });
-  }, []);
+  const AddBlogFormRef = useRef()
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser');
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
-      setUser(user);
-      blogService.setToken(user.token);
-    }
-  }, []);
-
-  const addBlog = (blogObject) => {
-    blogFormRef.current.toggleVisibility()
     blogService
-      .create(blogObject)
-      .then(returnedBlog => {
-        setBlogs(blogs.concat(returnedBlog))
+      .getAll()
+      .then((blogs) => setBlogs(blogs))
+      .catch((error) => {
+        console.log(error)
       })
-    console.log('created blog', blogObject)
+  }, [])
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
+    }
+  }, [])
+
+  const handleLogin = async (event) => {
+    event.preventDefault()
+    try {
+      const user = await loginService.login({ username, password })
+
+      window.localStorage.setItem('loggedBloglistUser', JSON.stringify(user))
+
+      blogService.setToken(user.token)
+      setUser(user)
+      setUsername('')
+      setPassword('')
+      setSuccessMsg(`Welcome, ${username}!`)
+    } catch (error) {
+      setErrorMsg(error.response.data.error)
+    }
   }
 
-  const loginForm = () => {
-    const hideWhenVisible = { display: loginVisible ? 'none' : '' }
-    const showWhenVisible = { display: loginVisible ? '' : 'none' }
+  const addBlog = async (blogObject) => {
+    try {
+      AddBlogFormRef.current.toggleVisibility()
 
-    return (
-      <div>
-        <div style={hideWhenVisible}>
-          <button onClick={() => setLoginVisible(true)}>Login</button>
-        </div>
-        <div style={showWhenVisible}>
-          <LoginForm
-            username={username}
-            password={password}
-            handleUsernameChange={({ target }) => setUsername(target.value)}
-            handlePasswordChange={({ target }) => setPassword(target.value)}
-            handleSubmit={handleLogin}
-          />
-          <button onClick={() => setLoginVisible(false)}>cancel</button>
-        </div>
-      </div>
-    )
+      const returnedBlog = await blogService.create(blogObject)
+      const addedBlog = await blogService.get(returnedBlog.id)
+      console.log('addedBlog:', addedBlog)
+      setBlogs(blogs.concat(addedBlog))
+      setSuccessMsg(
+        `Blog ${returnedBlog.title} by ${returnedBlog.author} added!`
+      )
+    } catch (error) {
+      if (error && error.response.data.error) {
+        setErrorMsg(error.response.data.error)
+      } else {
+        console.log('error: ', error)
+      }
+    }
   }
+
+  const handleLike = async (blogId) => {
+    try {
+      console.log('blogId:', blogId)
+      const blogToLike = blogs.find((blog) => blog.id === blogId)
+      console.log('blogToLike:', blogToLike)
+      const updatedBlog = await blogService.update(blogId, {
+        ...blogToLike,
+        likes: blogToLike.likes + 1,
+      })
+      console.log('updatedBlog:', updatedBlog)
+      setBlogs(
+        blogs.map((blog) => (blog.id === updatedBlog.id ? updatedBlog : blog))
+      )
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleLogout = (username) => {
+    window.localStorage.removeItem('loggedBloglistUser')
+    setSuccessMsg(`See you soon, ${username}`)
+    setUser(null)
+  }
+
+  const descendingLikes = (a, b) => b.likes - a.likes
+  const sortedBlogs = [...blogs].sort(descendingLikes)
 
   return (
     <div>
-      <h1>Blogs</h1>
-      {successMsg && <Notification message={successMsg} type="success" />}
-      {errorMsg && <Notification message={errorMsg} type="error" />}
-
-
+      <Notification
+        successMsg={successMsg}
+        setSuccessMsg={setSuccessMsg}
+        errorMsg={errorMsg}
+        setErrorMsg={setErrorMsg}
+      />
       {user === null ? (
-        <div>
-          <p>Login to see your blogs</p>
-          {loginForm()}
-        </div>
+        <LoginForm
+          handleLogin={handleLogin}
+          username={username}
+          setUsername={setUsername}
+          password={password}
+          setPassword={setPassword}
+        />
       ) : (
         <div>
-          <h2>BLOGS</h2>
-          <p>{user.name} logged in{' '}
-            <button onClick={() => handleLogout(user.username)}>logout</button></p>
-          <div>
-            <Togglable buttonLabel="new blog" ref={blogFormRef}>
-              <BlogForm createNote={addBlog} />
-            </Togglable>
+          <h2>blogs</h2>
+          <p>
+            {user.name} logged in{' '}
+            <button onClick={() => handleLogout(user.username)}>logout</button>
+          </p>
+          <Togglable buttonLabel="new blog" ref={AddBlogFormRef}>
+            <AddBlogForm buttonLabel="create" addBlog={addBlog} />
+          </Togglable>
 
-            {sortedBlogs.map((blog) => (
-              <Blog
-                key={blog.id}
-                blog={blog}
-                user={user}
-                blogs={blogs}
-                setBlogs={setBlogs}
-                setSuccessMsg={setSuccessMsg}
-                setErrorMsg={setErrorMsg}
-              />
-            ))}
-          </div>
-          <h2>bloglist</h2>
+          {sortedBlogs.map((blog) => (
+            <Blog
+              key={blog.id}
+              blog={blog}
+              user={user}
+              blogs={blogs}
+              setBlogs={setBlogs}
+              setSuccessMsg={setSuccessMsg}
+              setErrorMsg={setErrorMsg}
+              handleLike={handleLike}
+            />
+          ))}
         </div>
-      )
-      }
-    </div >
-  );
-};
+      )}
+    </div>
+  )
+}
 
-export default App;
+export default App
