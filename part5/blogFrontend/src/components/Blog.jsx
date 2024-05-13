@@ -71,7 +71,7 @@ const Blog = ({
           <div className="username">Added by {username}</div>
           {isAuthorized && (
             <div>
-              <button onClick={handleDelete}>remove blog</button>
+              <button id="remove-blog-button" onClick={handleDelete}>remove blog</button>
             </div>
           )}
         </>

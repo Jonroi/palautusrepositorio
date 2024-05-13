@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import Blog from './components/Blog'
+import Blog from './components/blog'
 import LoginForm from './components/LoginForm'
 import AddBlogForm from './components/addBlogForm'
 import Notification from './components/Notification'
@@ -16,21 +16,6 @@ const App = () => {
   const [errorMsg, setErrorMsg] = useState(null)
 
   const AddBlogFormRef = useRef()
-
-
-
-  useEffect(() => {
-    // Simulates user login
-    const userCredentials = {
-      username: 'testUser',
-      name: 'Test User',
-      password: '1234',
-      token: 'mockToken'
-    }
-
-    // Stores user credentials in local storage
-    window.localStorage.setItem('loggedBloglistUser', JSON.stringify(userCredentials))
-  }, [])
 
   useEffect(() => {
     blogService
@@ -133,7 +118,7 @@ const App = () => {
       ) : (
         <div>
           <h2>blogs</h2>
-          <p>
+          <p id='user-info'>
             {user.name} logged in{' '}
             <button onClick={() => handleLogout(user.username)}>logout</button>
           </p>
