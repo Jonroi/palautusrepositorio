@@ -1,7 +1,7 @@
 {
   "name": "blogilista",
   "version": "1.0.0",
-  "author": "Markus Becks",
+  "author": "Joni Roine",
   "main": "index.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand",

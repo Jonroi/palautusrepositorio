@@ -3,12 +3,12 @@ import userEvent from '@testing-library/user-event'
 import Blog from './blog'
 import AddBlogForm from './AddBlogForm'
 
-describe('<Blog /> rendering', () => {
+describe('Blog rendering', () => {
   const blog = {
     title: 'Test Title',
     author: 'Joni Jonssoni',
     url: 'http://superblog.com',
-    likes: 6
+    likes: 12
   }
 
   test('blog title is rendered correctly', () => {
@@ -30,7 +30,7 @@ describe('<Blog /> rendering', () => {
     const urlDiv = container.querySelector('.url')
     expect(urlDiv).toHaveTextContent('http://superblog.com')
     const likesDiv = container.querySelector('.likes')
-    expect(likesDiv).toHaveTextContent('6')
+    expect(likesDiv).toHaveTextContent('12')
     const usernameDiv = container.querySelector('.username')
     expect(usernameDiv).toHaveTextContent('Added by anonymous')
   })
