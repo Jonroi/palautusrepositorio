@@ -17,6 +17,21 @@ const App = () => {
 
   const AddBlogFormRef = useRef()
 
+
+
+  useEffect(() => {
+    // Simulates user login
+    const userCredentials = {
+      username: 'testUser',
+      name: 'Test User',
+      password: '1234',
+      token: 'mockToken'
+    }
+
+    // Stores user credentials in local storage
+    window.localStorage.setItem('loggedBloglistUser', JSON.stringify(userCredentials))
+  }, [])
+
   useEffect(() => {
     blogService
       .getAll()
