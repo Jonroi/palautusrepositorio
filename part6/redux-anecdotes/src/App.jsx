@@ -1,8 +1,9 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { voteAnecdote } from './reducers/anecdoteReducer'
+import CreateAnecdote from './components/AnecdoteForm'
 
 const App = () => {
-  const anecdotes = useSelector(state => state)
+  const anecdotes = useSelector(state => state.sort((a, b) => b.votes - a.votes))
   const dispatch = useDispatch()
 
   const vote = (id) => {
@@ -23,11 +24,7 @@ const App = () => {
           </div>
         </div>
       )}
-      <h2>create new</h2>
-      <form>
-        <div><input /></div>
-        <button>create</button>
-      </form>
+      <CreateAnecdote />
     </div>
   )
 }
