@@ -5,45 +5,45 @@ const anecdotesAtStart = [
   'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
   'Premature optimization is the root of all evil.',
   'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
-]
+];
 
-const getId = () => (1000 * Math.random()).toFixed(0)
+const getId = () => (1000 * Math.random()).toFixed(0);
 
 const asObject = (anecdote) => {
   return {
     content: anecdote,
     id: getId(),
     votes: 0
-  }
-}
+  };
+};
 
-const initialState = anecdotesAtStart.map(asObject)
+const initialState = anecdotesAtStart.map(asObject);
 
-const reducer = (state = initialState, action) => {
+const anecdoteReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'VOTE':
-      console.log('reducer received VOTE action:', action)
-      const id = action.data.id
-      const anecdote = state.find((a) => a.id === id)
-      const voted = { ...anecdote, votes: anecdote.votes + 1 }
-      return state.map((a) => (a.id === id ? voted : a))
-
+      const id = action.data.id;
+      const anecdoteToChange = state.find(a => a.id === id);
+      const changedAnecdote = {
+        ...anecdoteToChange,
+        votes: anecdoteToChange.votes + 1
+      };
+      return state.map(anecdote =>
+        anecdote.id !== id ? anecdote : changedAnecdote
+      );
     case 'NEW_ANECDOTE':
-      console.log('reducer received NEW_ANECDOTE action:', action)
-      return [...state, action.data]
-
+      return [...state, action.data];
     default:
-      return state
+      return state;
   }
-}
+};
 
 export const voteAnecdote = (id) => {
-  console.log('voteAnecdote action creator called with id:', id)
   return {
     type: 'VOTE',
     data: { id }
-  }
-}
+  };
+};
 
 export const addAnecdote = (content) => {
   return {
@@ -53,7 +53,7 @@ export const addAnecdote = (content) => {
       id: getId(),
       votes: 0
     }
-  }
-}
+  };
+};
 
-export default reducer
+export default anecdoteReducer;
