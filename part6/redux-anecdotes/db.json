@@ -1,0 +1,54 @@
+{
+  "anecdotes": [
+    {
+      "content": "Simplicity is the soul of efficiency.",
+      "id": "98765",
+      "votes": 31
+    },
+    {
+      "content": "Experience is the name everyone gives to their mistakes.",
+      "id": "12345",
+      "votes": 18
+    },
+    {
+      "content": "First, solve the problem. Then, write the code.",
+      "id": "67890",
+      "votes": 20
+    },
+    {
+      "content": "Make it work, make it right, make it fast.",
+      "id": "54321",
+      "votes": 18
+    },
+    {
+      "content": "Code is like humor. When you have to explain it, it’s bad.",
+      "id": "87654",
+      "votes": 22
+    },
+    {
+      "content": "Good code is its own best documentation.",
+      "id": "13579",
+      "votes": 19
+    },
+    {
+      "content": "Talk is cheap. Show me the code.",
+      "votes": 23,
+      "id": "24680"
+    },
+    {
+      "content": "Programs must be written for people to read, and only incidentally for machines to execute.",
+      "votes": 19,
+      "id": "11223"
+    },
+    {
+      "content": "Simplicity is prerequisite for reliability.",
+      "votes": 21,
+      "id": "33445"
+    },
+    {
+      "votes": 25,
+      "content": "Clean code always looks like it was written by someone who cares.",
+      "id": "55667"
+    }
+  ]
+}

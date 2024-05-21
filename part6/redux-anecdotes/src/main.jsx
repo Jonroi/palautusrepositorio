@@ -1,21 +1,12 @@
-import ReactDOM from 'react-dom/client'; // Oikea tapa React 18:ssa
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import App from './App';
-import anecdoteReducer from './reducers/anecdoteReducer';
-import filterReducer from './reducers/filterReducer';
+import ReactDOM from 'react-dom/client'
 
-const rootReducer = combineReducers({
-  anecdotes: anecdoteReducer,
-  filter: filterReducer
-});
+import { Provider } from 'react-redux'
+import store from './store'
 
-const store = createStore(rootReducer);
-
-console.log(store.getState());
+import App from './App'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
     <App />
   </Provider>
-);
+)
