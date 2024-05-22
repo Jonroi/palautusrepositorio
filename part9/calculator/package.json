@@ -1,5 +1,5 @@
 {
-  "name": "first_app",
+  "name": "calculator",
   "version": "1.0.0",
   "description": "typescript exercise",
   "main": "index.js",
@@ -7,9 +7,11 @@
   "license": "ISC",
   "scripts": {
     "ts-node": "ts-node",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "multiply": "ts-node multiplier.ts",
+    "calculate": "ts-node calculator.ts"
   },
   "devDependencies": {
+    "@types/node": "^20.12.12",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
   }
