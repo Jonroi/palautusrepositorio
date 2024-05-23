@@ -18,7 +18,8 @@ app.get('/bmi', (req, res) => {
     res.json({
       weight,
       height,
-      bmi: category
+      bmi,
+      category
     })
 
     return

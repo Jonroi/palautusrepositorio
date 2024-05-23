@@ -43,7 +43,7 @@ try {
 
   const bmi = calculateBmi(weight, height)
   console.log('BMI:', bmi)
-  console.log('BMI Category:', getBmiCategory(bmi)) // Logging BMI category
+  console.log('BMI Category:', getBmiCategory(bmi))
 } catch (error: unknown) {
   let errorMessage = 'Something went wrong: '
   if (error instanceof Error) {
