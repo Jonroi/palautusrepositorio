@@ -42,8 +42,22 @@ const ExerciseCalculator = (
   }
 }
 
+// Command-line argument handling
 try {
-  const result = ExerciseCalculator([3, 0, 2, 4.5, 0], 3)
+  const args = process.argv.slice(2)
+
+  if (args.length < 2) {
+    throw new Error('Not enough arguments. Provide target and daily hours.')
+  }
+
+  const target = Number(args[0])
+  const dailyHours = args.slice(1).map(Number)
+
+  if (isNaN(target) || dailyHours.some(isNaN)) {
+    throw new Error('Invalid number in arguments.')
+  }
+
+  const result = ExerciseCalculator(dailyHours, target)
   console.log('Exercise result:', result)
 } catch (error: unknown) {
   let errorMessage = 'Something went wrong: '
