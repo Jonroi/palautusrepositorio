@@ -10,11 +10,15 @@
     "ts-node": "ts-node",
     "multi": "ts-node multiplier.ts",
     "cal": "ts-node calculator.ts",
-    "start": "ts-node index.ts"
+    "start": "ts-node index.ts",
+    "lint": "eslint --ext .ts ."
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
     "@types/node": "^20.12.12",
+    "@typescript-eslint/eslint-plugin": "^7.10.0",
+    "@typescript-eslint/parser": "^7.10.0",
+    "eslint": "^8.57.0",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.4.5"

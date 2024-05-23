@@ -1,5 +1,5 @@
 // bmiCalculator.ts
-const calculateBmi = (weight: number, height: number): number => {
+export const calculateBmi = (weight: number, height: number): number => {
   if (height <= 0 || weight <= 0) {
     throw new Error('Height and weight must be positive numbers')
   }
@@ -8,7 +8,7 @@ const calculateBmi = (weight: number, height: number): number => {
   return weight / (heightInMeters * heightInMeters)
 }
 
-const getBmiCategory = (bmi: number): string => {
+export const getBmiCategory = (bmi: number): string => {
   if (bmi < 18.5) {
     return 'Underweight (Unhealthy)'
   } else if (bmi >= 18.5 && bmi < 25) {
@@ -23,8 +23,6 @@ const getBmiCategory = (bmi: number): string => {
     return 'Overweight III (Very severely obese)'
   }
 }
-
-export { calculateBmi, getBmiCategory }
 
 // Command-line argument handling
 try {
