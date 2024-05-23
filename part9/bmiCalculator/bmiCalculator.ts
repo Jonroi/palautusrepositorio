@@ -1,23 +1,30 @@
-const bmiCalculator = (weight: number, height: number): number => {
+// bmiCalculator.ts
+const calculateBmi = (weight: number, height: number): number => {
+  if (height <= 0 || weight <= 0) {
+    throw new Error('Height and weight must be positive numbers')
+  }
+
   const heightInMeters = height / 100
   return weight / (heightInMeters * heightInMeters)
 }
 
-const getBmiCategory = (bmi: number): void => {
+const getBmiCategory = (bmi: number): string => {
   if (bmi < 18.5) {
-    console.log('Underweight (Unhealthy)')
+    return 'Underweight (Unhealthy)'
   } else if (bmi >= 18.5 && bmi < 25) {
-    console.log('Normal (healthy weight)')
+    return 'Normal (healthy weight)'
   } else if (bmi >= 25 && bmi < 30) {
-    console.log('Overweight  (At risk)')
+    return 'Overweight (At risk)'
   } else if (bmi >= 30 && bmi < 35) {
-    console.log('Overweight I (Moderately obese)')
+    return 'Overweight I (Moderately obese)'
   } else if (bmi >= 35 && bmi < 40) {
-    console.log('Overweight II (Severely obese)')
-  } else if (bmi >= 40) {
-    console.log('Overweight III (Very severely obese)')
+    return 'Overweight II (Severely obese)'
+  } else {
+    return 'Overweight III (Very severely obese)'
   }
 }
+
+export { calculateBmi, getBmiCategory }
 
 // Command-line argument handling
 try {
@@ -34,9 +41,9 @@ try {
     throw new Error('Invalid number in arguments.')
   }
 
-  const bmi = bmiCalculator(weight, height)
+  const bmi = calculateBmi(weight, height)
   console.log('BMI:', bmi)
-  getBmiCategory(bmi)
+  console.log('BMI Category:', getBmiCategory(bmi)) // Logging BMI category
 } catch (error: unknown) {
   let errorMessage = 'Something went wrong: '
   if (error instanceof Error) {
