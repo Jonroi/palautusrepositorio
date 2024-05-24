@@ -1,4 +1,4 @@
-interface ExerciseResult {
+export interface exerciseResult {
   periodLength: number;
   trainingDays: number;
   success: boolean;
@@ -8,10 +8,10 @@ interface ExerciseResult {
   average: number;
 }
 
-const ExerciseCalculator = (
+export const calculateExercise = (
   dailyHours: number[],
   target: number,
-): ExerciseResult => {
+): exerciseResult => {
   const periodLength = dailyHours.length;
   const trainingDays = dailyHours.filter((hours) => hours > 0).length;
   const totalHours = dailyHours.reduce((acc, cur) => acc + cur, 0);
@@ -57,7 +57,7 @@ try {
     throw new Error('Invalid number in arguments.');
   }
 
-  const result = ExerciseCalculator(dailyHours, target);
+  const result = calculateExercise(dailyHours, target);
   console.log('Exercise result:', result);
 } catch (error: unknown) {
   let errorMessage = 'Something went wrong: ';
