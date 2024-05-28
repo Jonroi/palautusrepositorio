@@ -25,7 +25,7 @@
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": ["part9/patientBack/tsconfig.json"]
+    "project": ["part9/patientFullStack/patientBack/tsconfig.json"]
   },
   "ignorePatterns": ["build/"]
 }
