@@ -1,24 +1,24 @@
 import express from 'express';
-import path from 'path';
+import diagnoseRouter from './routes/diagnoses';
+import patientRouter from './routes/patients';
 
+import cors from 'cors';
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use(cors());
+app.use(express.static('build'));
 
-// Serve static files from the frontend's dist directory
-app.use(express.static(path.join(__dirname, '../../patientorFront/dist')));
+const PORT = 3000;
 
-// Example endpoint
-app.get('/ping', (_req, res) => {
+app.get('/api/ping', (_req, res) => {
   console.log('someone pinged here');
   res.send('pong');
 });
 
-// Handle all other routes and serve the index.html file
-app.get('*', (_req, res) => {
-  res.sendFile(path.join(__dirname, '../../patientFront/dist/index.html'));
-});
+app.use('/api/patients', patientRouter);
+
+app.use('/api/diagnoses', diagnoseRouter);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
